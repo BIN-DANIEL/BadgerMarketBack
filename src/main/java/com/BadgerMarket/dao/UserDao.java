@@ -5,8 +5,8 @@ import com.BadgerMarket.entity.UserInfo;
 
 public interface UserDao {
     public boolean addItem(String username, Item item);
-    public boolean deleteItem(String username, String itemId);
-    public Item getItem(String username, String itemId);
+    public boolean deleteItem(String username, byte[] itemId);
+    public Item getItem(String username, byte[] itemId);
     public boolean updateItem(String username, Item item);
     public UserInfo getUserInfo(String username);
     public boolean updateUserInfo(String username, UserInfo userInfo);

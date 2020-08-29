@@ -9,6 +9,11 @@ import java.util.ArrayList;
  */
 public class User {
     private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
     private String password;
 
     public void setUsername(String username) {
@@ -16,6 +21,7 @@ public class User {
     }
 
     public String getPassword() {
+
         return password;
     }
 

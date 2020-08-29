@@ -1,5 +1,7 @@
 package com.BadgerMarket;
 
+import com.BadgerMarket.dao.DataBaseDao;
+import com.BadgerMarket.dao.DataBaseDaoImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
@@ -13,6 +15,9 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+
+
+
 /**
  * 标注一个主程序
  */
@@ -20,10 +25,14 @@ import java.sql.SQLException;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
-        //Spring应用
 
-
-        SpringApplication.run(Application.class, args);
-
+        ApplicationContext app = SpringApplication.run(Application.class, args);
+        /** DataBase Initialization **/
+//        DataBaseDao dataBaseDao = (DataBaseDao) app.getBean("dataBaseDaoImpl");
+//        dataBaseDao.createUserTable();
+//        dataBaseDao.createUserInfoTable();
+//        dataBaseDao.createItemTable();
+//        dataBaseDao.createItemImageTable();
+        /** Start the Application **/
     }
 }

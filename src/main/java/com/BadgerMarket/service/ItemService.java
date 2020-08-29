@@ -14,27 +14,27 @@ public class ItemService {
     @Qualifier("itemDaoImpl")
     private ItemDao itemDao;
 
-    public List<ItemImage> getAllImages(String itemId) {
+    public List<ItemImage> getAllImages(byte[] itemId) {
         return itemDao.getAllImages(itemId);
     }
 
 
-    public boolean addItemImage(String itemId, ItemImage image) {
+    public boolean addItemImage(byte[] itemId, ItemImage image) {
         return itemDao.addItemImage(itemId, image);
     }
 
 
-    public boolean deleteItemImage(String itemId, String imageId) {
+    public boolean deleteItemImage(byte[] itemId, byte[] imageId) {
         return itemDao.deleteItemImage(itemId, imageId);
     }
 
 
-    public boolean deleteAllItemImages(String itemId) {
+    public boolean deleteAllItemImages(byte[] itemId) {
         return itemDao.deleteAllItemImages(itemId);
     }
 
 
-    public boolean getItemImage(String itemId, String imageId) {
+    public boolean getItemImage(byte[] itemId, byte[] imageId) {
         return itemDao.getItemImage(itemId, imageId);
     }
 }
