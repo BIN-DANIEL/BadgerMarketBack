@@ -14,27 +14,31 @@ public class ItemService {
     @Qualifier("itemDaoImpl")
     private ItemDao itemDao;
 
-    public List<ItemImage> getAllImages(byte[] itemId) {
-        return itemDao.getAllImages(itemId);
+    public List<ItemImage> getAllImages(String itemId) {
+        return itemDao.getAllImages(itemDao.hexString2ByteArray(itemId));
     }
 
 
-    public boolean addItemImage(byte[] itemId, ItemImage image) {
-        return itemDao.addItemImage(itemId, image);
+    public boolean addItemImage(String itemId, ItemImage image) {
+
+        return itemDao.addItemImage(itemDao.hexString2ByteArray(itemId), image);
     }
 
 
-    public boolean deleteItemImage(byte[] itemId, byte[] imageId) {
-        return itemDao.deleteItemImage(itemId, imageId);
+    public boolean deleteItemImage(String itemId, String imageId) {
+
+        return itemDao.deleteItemImage(itemDao.hexString2ByteArray(itemId), itemDao.hexString2ByteArray(imageId));
     }
 
 
-    public boolean deleteAllItemImages(byte[] itemId) {
-        return itemDao.deleteAllItemImages(itemId);
+    public boolean deleteAllItemImages(String itemId) {
+
+        return itemDao.deleteAllItemImages(itemDao.hexString2ByteArray(itemId));
     }
 
 
-    public boolean getItemImage(byte[] itemId, byte[] imageId) {
-        return itemDao.getItemImage(itemId, imageId);
+    public boolean getItemImage(String itemId, String imageId) {
+
+        return itemDao.getItemImage(itemDao.hexString2ByteArray(itemId), itemDao.hexString2ByteArray(imageId));
     }
 }

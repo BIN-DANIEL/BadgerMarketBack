@@ -8,35 +8,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class UserService{
     @Autowired
-    @Qualifier("userDaoImpl")
     private UserDao userDao;
     @Autowired
     private ItemDao itemDao;
-    public boolean addItem(String username, Item item) {
+
+    public boolean addItem(Item item) {
         // Generate random
         item.setItemId(itemDao.hexString2ByteArray(UUID.randomUUID().toString().replace("-","")));
-        return userDao.addItem(username, item);
+        return userDao.addItem(item);
     }
 
-    public boolean deleteItem(String username, byte[] itemId) {
-        return userDao.deleteItem(username, itemId);
+    public boolean deleteItem(String itemId) {
+        return userDao.deleteItem(itemDao.hexString2ByteArray(itemId));
+    }
+    public List<Item> getAllItemsOfUser(String username) {
+        return userDao.getAllItemsOfUser(username);
+    }
+    public Item getItem(String itemId) {
+
+        return userDao.getItem(itemDao.hexString2ByteArray(itemId));
     }
 
-    public Item getItem(String username, byte[] itemId) {
-        return userDao.getItem(username, itemId);
-    }
+    public boolean updateItem(Item item) {
 
-    public boolean updateItem(String username, Item item) {
-        return userDao.updateItem(username, item);
+        return userDao.updateItem(item);
     }
 
 
     public UserInfo getUserInfo(String username) {
+
         return userDao.getUserInfo(username);
     }
 
@@ -46,6 +52,7 @@ public class UserService{
     }
 
     public boolean deleteUserInfo(String username) {
+
         return userDao.deleteUserInfo(username);
     }
 }

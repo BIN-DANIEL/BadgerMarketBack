@@ -7,6 +7,7 @@ import com.BadgerMarket.dao.ItemDao;
 import com.BadgerMarket.dao.UserDao;
 import com.BadgerMarket.entity.Item;
 import com.BadgerMarket.entity.User;
+import com.BadgerMarket.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ import static org.apache.naming.SelectorContext.prefix;
 @SpringBootTest
 public class TestService {
     @Autowired
-    UserDao adminDao;
+    UserService userService;
 
     @Autowired
     ItemDao itemDao;
@@ -35,6 +36,11 @@ public class TestService {
     JdbcTemplate jdbcTemplate;
     @Test
     public void runDataBase() throws Exception{
+           String id = "4D937D9C049A4B5BA9DBA0D7419832FE";
+           Item item = userService.getItem(id);
+           item.setUsername("HELLO");
+           item.setDescription("你好");
+           userService.updateItem(item);
 
     }
 
