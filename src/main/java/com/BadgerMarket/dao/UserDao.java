@@ -6,6 +6,7 @@ import com.BadgerMarket.entity.UserInfo;
 import java.util.List;
 
 public interface UserDao {
+    public boolean addUserInfo(UserInfo info);
     public boolean addItem(Item item);
     public boolean deleteItem(byte[] itemId);
     public Item getItem(byte[] itemId);

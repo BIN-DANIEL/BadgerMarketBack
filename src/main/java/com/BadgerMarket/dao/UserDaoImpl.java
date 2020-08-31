@@ -135,4 +135,15 @@ public class UserDaoImpl implements UserDao {
             return false;
         }
     }
+
+    @Override
+    public boolean addUserInfo(UserInfo info) {
+        try {
+            String sql = "Insert into " + userInfoTable + " values(?,?,?,?,?)";
+            jdbcTemplate.update(sql, info.getUsername(), info.getQq(), info.getWechat(), info.getPhone(), info.getMail());
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
 }

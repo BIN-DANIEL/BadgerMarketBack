@@ -18,17 +18,27 @@ public class UserService{
     @Autowired
     private ItemDao itemDao;
 
+    /**
+     * Item Id will be automatically generated
+     * @param item
+     * @return
+     */
     public boolean addItem(Item item) {
         // Generate random
         item.setItemId(itemDao.hexString2ByteArray(UUID.randomUUID().toString().replace("-","")));
         return userDao.addItem(item);
     }
-
+    public boolean deleteItem(byte[] itemId) {
+        return userDao.deleteItem(itemId);
+    }
     public boolean deleteItem(String itemId) {
         return userDao.deleteItem(itemDao.hexString2ByteArray(itemId));
     }
     public List<Item> getAllItemsOfUser(String username) {
         return userDao.getAllItemsOfUser(username);
+    }
+    public Item getItem (byte[] itemId) {
+        return userDao.getItem(itemId);
     }
     public Item getItem(String itemId) {
 
@@ -40,7 +50,9 @@ public class UserService{
         return userDao.updateItem(item);
     }
 
-
+    public boolean addUserInfo(UserInfo info) {
+        return userDao.addUserInfo(info);
+    }
     public UserInfo getUserInfo(String username) {
 
         return userDao.getUserInfo(username);

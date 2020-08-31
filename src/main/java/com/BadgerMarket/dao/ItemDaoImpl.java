@@ -1,6 +1,11 @@
 package com.BadgerMarket.dao;
 
 import com.BadgerMarket.entity.ItemImage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,7 +14,8 @@ import java.util.List;
 public class ItemDaoImpl implements ItemDao{
     private static String itemTable = "Item";
     private static String itemImageTable = "ItemImage";
-
+    @Autowired
+    JdbcTemplate jdbcTemplate;
     @Override
     public String byteArr2HexString(byte[] byteArray) {
         if (byteArray == null) {
@@ -43,26 +49,65 @@ public class ItemDaoImpl implements ItemDao{
 
     @Override
     public List<ItemImage> getAllImages(byte[] itemId) {
-        return null;
+        try {
+            String sql = "select * from " + itemImageTable + " where itemId=?";
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ItemImage.class), itemId);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
-
-    @Override
-    public boolean addItemImage(byte[] itemId, ItemImage image) {
-        return false;
-    }
-
-    @Override
-    public boolean deleteItemImage(byte[] itemId, byte[] imageId) {
-        return false;
-    }
-
     @Override
     public boolean deleteAllItemImages(byte[] itemId) {
-        return false;
+        try {
+            String sql = "delete from " + itemImageTable + " where itemId=?";
+            jdbcTemplate.update(sql, itemId);
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
     }
 
     @Override
-    public boolean getItemImage(byte[] itemId, byte[] imageId) {
-        return false;
+    public boolean addItemImage(ItemImage image) {
+        try {
+            String sql = "Insert into " +  itemImageTable + " values(?,?,?,?)";
+            jdbcTemplate.update(sql, image.getImageId(), image.getItemId(), image.getDiskUrl(), image.getHttpUrl());
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteItemImage(byte[] imageId) {
+        try {
+            String sql = "Delete from " + itemImageTable + " where imageId=?";
+            jdbcTemplate.update(sql, imageId);
+            return true;
+        } catch (DataAccessException e) {
+            return false;
+        }
+    }
+
+    @Override
+    public ItemImage getItemImage(byte[] imageId) {
+        try {
+            String sql = "Select * from " + itemImageTable + " where imageId=?";
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(ItemImage.class), imageId);
+        } catch (IncorrectResultSizeDataAccessException e) {
+            return null;
+        } catch (DataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<ItemImage> getAllImagesExcept(byte[] itemId, byte[] except) {
+        try {
+            String sql = "select * from " + itemImageTable + " where itemId=? and imageId != ?";
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ItemImage.class), itemId, except);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 }
