@@ -2,6 +2,7 @@ package com.BadgerMarket;
 
 import com.BadgerMarket.entity.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoginReplyMessage {
@@ -17,6 +18,10 @@ public class LoginReplyMessage {
     private List<ItemInfo> itemInfo; // Key Information Of Items
     private List<ItemImageResource> itemImageResource; // URLs to Images of Item
 
+    public LoginReplyMessage() {
+        itemInfo = new ArrayList<>();
+        itemImageResource = new ArrayList<>();
+    }
     public List<ItemInfo> getItemInfo() {
         return itemInfo;
     }

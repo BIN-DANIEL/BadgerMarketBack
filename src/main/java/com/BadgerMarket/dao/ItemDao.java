@@ -14,4 +14,7 @@ public interface ItemDao {
     public String byteArr2HexString(byte[] byteArr);
     public byte[] hexString2ByteArray(String hexString);
     public List<ItemImage> getAllImagesExcept(byte[] itemId, byte[] except);
+    public List<String> getAllImagesUrlExcept(byte[] itemId, byte[] except);
+    public String getItemImageUrl(byte[] imageId);
+    public Integer getNumberOfItems(String category);
 }

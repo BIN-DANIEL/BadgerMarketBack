@@ -6,6 +6,7 @@ import com.BadgerMarket.ItemInfo;
 import com.BadgerMarket.LoginReplyMessage;
 import com.BadgerMarket.entity.Item;
 import com.BadgerMarket.entity.ItemImage;
+import com.BadgerMarket.entity.User;
 import com.BadgerMarket.entity.UserInfo;
 import com.BadgerMarket.service.AdminService;
 import com.BadgerMarket.service.ItemService;
@@ -36,6 +37,11 @@ public class LoginServer {
                                     @RequestParam(name="password") String password) {
         LoginReplyMessage msg = new LoginReplyMessage();
         if (adminService.hasUser(username)) {
+            User user = adminService.getUser(username);
+            if (!user.getPassword().equals(password)) {
+                msg.setSuccess(false);
+                return msg;
+            }
             List<Item> items = userService.getAllItemsOfUser(username);
             List<ItemInfo> itemInfos = new ArrayList<>();
             List<ItemImageResource> itemImageResources = new ArrayList<>();

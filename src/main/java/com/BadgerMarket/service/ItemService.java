@@ -13,10 +13,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ItemService {
+public class ItemService{
     @Autowired
     @Qualifier("itemDaoImpl")
     private ItemDao itemDao;
+
+    public Integer getNumberOfItems(String category) {
+        return itemDao.getNumberOfItems(category);
+    }
+
+    public List<String> getAllImagesUrlExcept(byte[] itemId, byte[] except) {
+        return itemDao.getAllImagesUrlExcept(itemId, except);
+    }
+
+    public String getItemImageUrl(byte[] imageId) {
+        return itemDao.getItemImageUrl(imageId);
+    }
+
     public ItemInfo getItemInfo(Item item) {
         if (item == null) {
             return null;
@@ -65,6 +78,9 @@ public class ItemService {
     }
 
     public boolean addItemImage(ItemImage image) {
+        if (image == null) {
+            return false;
+        }
         return itemDao.addItemImage(image);
     }
     public boolean deleteItemImage(byte[] imageId) {

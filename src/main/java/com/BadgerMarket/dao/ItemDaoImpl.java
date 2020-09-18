@@ -6,8 +6,11 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -16,6 +19,36 @@ public class ItemDaoImpl implements ItemDao{
     private static String itemImageTable = "ItemImage";
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    @Override
+    public Integer getNumberOfItems(String category) {
+        String sql = "select count(*) from " + itemTable + " where category=?";
+        return jdbcTemplate.queryForObject(sql, Integer.class , category);
+    }
+
+    @Override
+    public List<String> getAllImagesUrlExcept(byte[] itemId, byte[] except) {
+            String sql = "select * from " + itemImageTable + " where itemId=? and imageId != ?";
+            return jdbcTemplate.query(sql, new RowMapper<String>() {
+                @Override
+                public String mapRow(ResultSet resultSet, int i) throws SQLException {
+                    return resultSet.getString("httpUrl");
+                }
+            }, itemId, except);
+    }
+
+    @Override
+    public String getItemImageUrl(byte[] imageId) {
+        String sql = "select * from " + itemImageTable + " where imageId=?";
+
+        return jdbcTemplate.queryForObject(sql, new RowMapper<String>() {
+            @Override
+            public String mapRow(ResultSet resultSet, int i) throws SQLException {
+                return resultSet.getString("httpUrl");
+            }
+        }, imageId);
+    }
+
     @Override
     public String byteArr2HexString(byte[] byteArray) {
         if (byteArray == null) {
@@ -74,6 +107,7 @@ public class ItemDaoImpl implements ItemDao{
             jdbcTemplate.update(sql, image.getImageId(), image.getItemId(), image.getDiskUrl(), image.getHttpUrl());
             return true;
         } catch (DataAccessException e) {
+            System.out.println("HERE");
             return false;
         }
     }

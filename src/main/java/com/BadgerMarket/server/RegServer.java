@@ -1,5 +1,6 @@
 package com.BadgerMarket.server;
 
+import com.BadgerMarket.ItemInfo;
 import com.BadgerMarket.RegInfo;
 import com.BadgerMarket.entity.User;
 import com.BadgerMarket.entity.UserInfo;
@@ -7,6 +8,9 @@ import com.BadgerMarket.service.AdminService;
 import com.BadgerMarket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the server handling Register event
@@ -18,7 +22,16 @@ public class RegServer {
     @Autowired
     UserService userService;
     private class RegReplyMessage {
+        private List<ItemInfo> itemInfo;
         private boolean regSuccess;
+        public RegReplyMessage() {
+            itemInfo = new ArrayList<>();
+        }
+
+        public List<ItemInfo> getItemInfo() {
+            return itemInfo;
+        }
+
         public boolean getRegSuccess() {
             return regSuccess;
         }

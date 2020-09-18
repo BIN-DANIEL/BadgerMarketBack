@@ -15,9 +15,9 @@ public class DataBaseDaoImpl implements DataBaseDao {
 //        String sql = "Drop Table If Exists Item";
 //        jdbcTemplate.execute(sql);
         String sql = "CREATE TABLE Item(itemId BINARY(16) PRIMARY KEY , title CHAR(255), description TEXT(65535), price DOUBLE," +
-                "username CHAR(255), coverImageId BINARY(16), " +
+                "username CHAR(255), coverImageId BINARY(16), category CHAR(255), " +
                 "FOREIGN KEY(username) " +
-                "REFERENCES User (username))";
+                "REFERENCES User (username) ON DELETE CASCADE)";
         jdbcTemplate.execute(sql);
     }
 
@@ -26,7 +26,7 @@ public class DataBaseDaoImpl implements DataBaseDao {
 //        String sql = "Drop Table If Exists ItemImage";
 //        jdbcTemplate.execute(sql);
         String sql = "CREATE TABLE ItemImage(imageId BINARY(16) PRIMARY KEY, itemId BINARY(16), " +
-                "diskUrl CHAR(255), httpUrl CHAR(255), FOREIGN KEY (itemId) REFERENCES Item (itemId))";
+                "diskUrl CHAR(255), httpUrl CHAR(255), FOREIGN KEY (itemId) REFERENCES Item (itemId) ON DELETE CASCADE)";
         jdbcTemplate.execute(sql);
     }
 
@@ -45,7 +45,7 @@ public class DataBaseDaoImpl implements DataBaseDao {
 //        jdbcTemplate.execute(sql);
         String sql = "CREATE TABLE UserInfo(username CHAR(255) PRIMARY KEY, " +
                 "qq CHAR(20), weChat CHAR(25), phone CHAR(15), mail VARCHAR(255)," +
-                "FOREIGN KEY (username) REFERENCES User (username))";
+                "FOREIGN KEY (username) REFERENCES User (username) ON DELETE CASCADE)";
         jdbcTemplate.execute(sql);
     }
 }

@@ -25,8 +25,13 @@ public class UserService{
      */
     public boolean addItem(Item item) {
         // Generate random
-        item.setItemId(itemDao.hexString2ByteArray(UUID.randomUUID().toString().replace("-","")));
         return userDao.addItem(item);
+    }
+    public String byteArr2HexString(byte[] byteArray) {
+        return itemDao.byteArr2HexString(byteArray);
+    }
+    public byte[] hexString2ByteArray(String str) {
+        return itemDao.hexString2ByteArray(str);
     }
     public boolean deleteItem(byte[] itemId) {
         return userDao.deleteItem(itemId);

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Item(itemId(Binary), title, description, price, username, coverImageId(Binary))
+ * Item(itemId(Binary), title, description, price, username, coverImageId(Binary), category)
  */
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -32,13 +32,11 @@ public class UserDaoImpl implements UserDao {
      */
     @Override
     public boolean addItem(Item item) {
-        byte[] id = itemDao.hexString2ByteArray(UUID.randomUUID().toString().replace("-",""));
-        item.setItemId(id);
         try {
             String sql = "Insert Into " + itemTable +
-                    " values(?,?,?,?,?,?)";
+                    " values(?,?,?,?,?,?,?)";
             jdbcTemplate.update(sql, item.getItemId(), item.getTitle(), item.getDescription(),
-                    item.getPrice(), item.getUsername(), item.getCoverImageId());
+                    item.getPrice(), item.getUsername(), item.getCoverImageId(), item.getCategory());
 
             return true;
         } catch (DataAccessException e) {
@@ -84,7 +82,7 @@ public class UserDaoImpl implements UserDao {
     public List<Item> getAllItemsOfUser(String username) {
         try {
             String sql = "Select * from " +  itemTable + " where username=?";
-            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<Item>(), username);
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Item.class), username);
         } catch (DataAccessException e) {
             return null;
         }
@@ -94,8 +92,8 @@ public class UserDaoImpl implements UserDao {
     public boolean updateItem(Item item) {
         //Item(itemId(Binary), title, description, price, username, coverImageId(Binary))
         try {
-            String sql = "update " +  itemTable + " set title=?, description=?, price=?, coverImageId=? where itemId=?";
-            jdbcTemplate.update(sql, item.getTitle(), item.getDescription(), item.getPrice(), item.getCoverImageId(), item.getItemId());
+            String sql = "update " +  itemTable + " set title=?, description=?, price=?, coverImageId=?, category=? where itemId=?";
+            jdbcTemplate.update(sql, item.getTitle(), item.getDescription(), item.getPrice(), item.getCoverImageId(), item.getCategory(), item.getItemId());
             return true;
         }catch (DataAccessException e) {
             return false;

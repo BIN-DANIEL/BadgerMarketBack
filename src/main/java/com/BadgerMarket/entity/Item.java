@@ -17,6 +17,15 @@ public class Item {
     private double price; // Item's price(in $)
     private String username; // the username to which the Item belongs.
     private byte[] coverImageId; // Id of the cover Image
+    private String category;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public byte[] getItemId() {
         return itemId;
