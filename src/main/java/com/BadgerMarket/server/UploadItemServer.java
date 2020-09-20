@@ -11,6 +11,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,8 +26,12 @@ import java.util.regex.Pattern;
 
 @RestController
 public class UploadItemServer {
-    private static String ItemImageDest = "/Users/shaobindanielhong/MyProject/BadgerMarket/webBackEnd/src/main/resources/static/";
-    public static String ItemImageHttpURL = "http://127.0.0.1:80/";
+    @Value("${resourceDest.itemImageDiskURL}")
+    private String ItemImageDest;
+    //= "/Users/shaobindanielhong/MyProject/BadgerMarket/webBackEnd/src/main/resources/static/";
+    @Value("${resourceDest.itemImageHttpURL}")
+    public String ItemImageHttpURL;
+    //"http://127.0.0.1:80/"
     @Autowired
     ItemService itemService;
     @Autowired

@@ -31,7 +31,7 @@ import java.sql.SQLException;
  */
 @SpringBootApplication
 public class Application implements WebMvcConfigurer{
-    @Value("spring.img.itemimageUrl")
+    @Value("${spring: resourceImg: itemimageUrl}")
     public String itemimageUrl;
 
     @Bean(name = "multipartResolver")

@@ -6,6 +6,7 @@ import com.BadgerMarket.service.AdminService;
 import com.BadgerMarket.service.ItemService;
 import com.BadgerMarket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,9 @@ public class FetchItemServer {
     private UserService userService;
     @Autowired
     private AdminService adminService;
-    private static String defaultCover = UploadItemServer.ItemImageHttpURL + "NoImage.jpg";
+    @Value("${resourceDest.itemImageHttpURL}")
+    public String ItemImageHttpURL;
+    private String defaultCover = ItemImageHttpURL + "NoImage.jpg";
     private class ReplyItem {
         private String title; // title of the item
         private String description; // Item's description

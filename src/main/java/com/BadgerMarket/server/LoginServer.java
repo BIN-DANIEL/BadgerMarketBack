@@ -13,6 +13,7 @@ import com.BadgerMarket.service.ItemService;
 import com.BadgerMarket.service.UserService;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,7 @@ public class LoginServer {
     @RequestMapping("/login")
     public LoginReplyMessage method(@RequestParam(name="username", required = true) String username,
                                     @RequestParam(name="password") String password) {
+
         LoginReplyMessage msg = new LoginReplyMessage();
         if (adminService.hasUser(username)) {
             User user = adminService.getUser(username);

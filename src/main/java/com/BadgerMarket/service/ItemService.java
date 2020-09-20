@@ -8,6 +8,7 @@ import com.BadgerMarket.entity.ItemImage;
 import com.BadgerMarket.server.UploadItemServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +19,9 @@ public class ItemService{
     @Autowired
     @Qualifier("itemDaoImpl")
     private ItemDao itemDao;
-
-    private static String defaultCover = UploadItemServer.ItemImageHttpURL + "NoImage.jpg";
+    @Value("${resourceDest.itemImageHttpURL}")
+    public String ItemImageHttpURL;
+    private String defaultCover = ItemImageHttpURL + "NoImage.jpg";
 
     public Integer getNumberOfItems(String category) {
         return itemDao.getNumberOfItems(category);

@@ -1,3 +1,10 @@
+---
+spring:
+  profiles:
+    active: dev
+---
+server:
+  port: 8080
 spring:
   datasource:
     username: ShaoBin
@@ -6,5 +13,23 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
-  img:
-    itemimageUrl: file:/Users/shaobindanielhong/MyProject/BadgerMarket/webBackEnd/src/main/resources/static/
+  profiles: dev
+resourceDest:
+  itemImageDiskURL: /Users/shaobindanielhong/MyProject/BadgerMarket/webBackEnd/src/main/resources/static/
+  itemImageHttpURL: http://localhost:80/
+---
+server:
+  port: 8080
+spring:
+  datasource:
+    username: ShaoBin
+    password: a88675577
+    url: jdbc:mysql://localhost:3306/BadgerMarket?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
+  profiles: prod
+resourceDest:
+  itemImageHttpURL: http://localhost:80/
+  itemImageDiskURL: /Users/shaobindanielhong/MyProject/BadgerMarket/webBackEnd/src/main/resources/static/
+---

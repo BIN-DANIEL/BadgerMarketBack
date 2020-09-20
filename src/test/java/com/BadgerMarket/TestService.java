@@ -11,6 +11,7 @@ import com.BadgerMarket.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -100,7 +101,6 @@ public class TestService {
 
     @Test
     public void runDataBase() throws Exception{
-        byte[] array = new byte[]{};
-        System.out.println(array.length);
+
     }
 }
