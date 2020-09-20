@@ -5,6 +5,7 @@ import com.BadgerMarket.ItemInfo;
 import com.BadgerMarket.dao.ItemDao;
 import com.BadgerMarket.entity.Item;
 import com.BadgerMarket.entity.ItemImage;
+import com.BadgerMarket.server.UploadItemServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class ItemService{
     @Autowired
     @Qualifier("itemDaoImpl")
     private ItemDao itemDao;
+
+    private static String defaultCover = UploadItemServer.ItemImageHttpURL + "NoImage.jpg";
 
     public Integer getNumberOfItems(String category) {
         return itemDao.getNumberOfItems(category);
@@ -46,17 +49,20 @@ public class ItemService{
         if (item == null) {
             return null;
         }
+
         ItemImage coverImage = getItemImage(item.getCoverImageId());
         List<ItemImage> otherImages = getAllImagesExcept(item.getItemId(), item.getCoverImageId());
         List<String> imagesURL = new ArrayList<>();
+        ItemImageResource resource = new ItemImageResource();
         if (otherImages != null) {
             for (int i = 0; i < otherImages.size(); i++) {
                  imagesURL.add(otherImages.get(i).getHttpUrl());
             }
         }
-        ItemImageResource resource = new ItemImageResource();
         if (coverImage != null) {
             resource.setCoverImageHttpURL(coverImage.getHttpUrl());
+        } else {
+            resource.setCoverImageHttpURL(defaultCover);
         }
         resource.setOtherImages(imagesURL);
         return resource;

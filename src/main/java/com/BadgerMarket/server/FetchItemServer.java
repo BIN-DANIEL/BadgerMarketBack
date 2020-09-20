@@ -6,6 +6,7 @@ import com.BadgerMarket.service.AdminService;
 import com.BadgerMarket.service.ItemService;
 import com.BadgerMarket.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ public class FetchItemServer {
     private UserService userService;
     @Autowired
     private AdminService adminService;
+    private static String defaultCover = UploadItemServer.ItemImageHttpURL + "NoImage.jpg";
     private class ReplyItem {
         private String title; // title of the item
         private String description; // Item's description
@@ -131,8 +133,16 @@ public class FetchItemServer {
             replyItem.setMail(userInfo.getMail());
             replyItem.setPhone(userInfo.getPhone());
             //Set up image resource
-            replyItem.setCoverImageHttpURL(itemService.getItemImageUrl(item.getCoverImageId()));
-            replyItem.setOtherImages(itemService.getAllImagesUrlExcept(item.getItemId(), item.getCoverImageId()));
+            try{
+                if (userService.byteArr2HexString(item.getCoverImageId()).equals("00000000000000000000000000000000")) {
+                    replyItem.setCoverImageHttpURL(defaultCover);
+                } else {
+                    replyItem.setCoverImageHttpURL(itemService.getItemImageUrl(item.getCoverImageId()));
+                    replyItem.setOtherImages(itemService.getAllImagesUrlExcept(item.getItemId(), item.getCoverImageId()));
+                }
+            } catch (EmptyResultDataAccessException e) {
+
+            }
             replyItems.add(replyItem);
         }
         List<Object> rep = new ArrayList<>();
@@ -172,8 +182,17 @@ public class FetchItemServer {
              replyItem.setMail(userInfo.getMail());
              replyItem.setPhone(userInfo.getPhone());
              //Set up image resource
-             replyItem.setCoverImageHttpURL(itemService.getItemImageUrl(item.getCoverImageId()));
-             replyItem.setOtherImages(itemService.getAllImagesUrlExcept(item.getItemId(), item.getCoverImageId()));
+            try{
+                if (userService.byteArr2HexString(item.getCoverImageId()).equals("00000000000000000000000000000000")) {
+                    replyItem.setCoverImageHttpURL(defaultCover);
+                } else {
+                    replyItem.setCoverImageHttpURL(itemService.getItemImageUrl(item.getCoverImageId()));
+                    replyItem.setOtherImages(itemService.getAllImagesUrlExcept(item.getItemId(), item.getCoverImageId()));
+                }
+            } catch (EmptyResultDataAccessException e) {
+
+            }
+
              replyItems.add(replyItem);
         }
         List<Object> rep = new ArrayList<>();

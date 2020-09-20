@@ -100,6 +100,7 @@ public class TestService {
 
     @Test
     public void runDataBase() throws Exception{
-
+        byte[] array = new byte[]{};
+        System.out.println(array.length);
     }
 }

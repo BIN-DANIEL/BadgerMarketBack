@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 @RestController
 public class UploadItemServer {
     private static String ItemImageDest = "/Users/shaobindanielhong/MyProject/BadgerMarket/webBackEnd/src/main/resources/static/";
-    private static String ItemImageHttpURL = "http://127.0.0.1:80/";
+    public static String ItemImageHttpURL = "http://127.0.0.1:80/";
     @Autowired
     ItemService itemService;
     @Autowired
@@ -151,6 +151,10 @@ public class UploadItemServer {
                filename = imageId + ".jpeg";
            } else if (filename.endsWith(".png")) {
                filename = imageId + ".png";
+           } else if (filename.endsWith(".JPEG")) {
+               filename = imageId + ".JPEG";
+           } else if (filename.endsWith(".PNG")) {
+               filename = imageId + ".PNG";
            }
            File destFile = new File(ItemImageDest, filename);
            ItemImage itemImage = new ItemImage();
@@ -171,10 +175,10 @@ public class UploadItemServer {
      * @return
      */
     private byte[] getDefaultCoverImageId() {
-            return null;
+            return new byte[]{};
     }
     private String getDefaultCoverImageURL() {
-         return null;
+         return ItemImageHttpURL + "NoImage.jpg";
     }
     public void createItem(Request request, UploadReply reply) {
         //TODO: 检查上传的图片是否为NULL
@@ -192,6 +196,7 @@ public class UploadItemServer {
         item.setItemId(itemId);
 
         ItemImage coverImage = null;
+
         if (request.getCoverImage() != null) { // When Cover Image is provided
             coverImage = createItemImage(itemId, request.getCoverImage());
             reply.setUrlToCover(coverImage.getHttpUrl());
