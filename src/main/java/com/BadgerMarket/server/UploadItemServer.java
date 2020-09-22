@@ -151,6 +151,8 @@ public class UploadItemServer {
     public ItemImage createItemImage(byte[] itemId, MultipartFile image) {
 
         String filename = image.getOriginalFilename();
+          System.out.println("FILENAME IS: " + filename);
+
            String imageId = UUID.randomUUID().toString().replace("-","");
            if (filename.endsWith(".jpeg")) {
                filename = imageId + ".jpeg";
@@ -160,19 +162,30 @@ public class UploadItemServer {
                filename = imageId + ".JPEG";
            } else if (filename.endsWith(".PNG")) {
                filename = imageId + ".PNG";
+           } else if (filename.endsWith(".jpg")) {
+               filename = imageId + ".jpg";
+           } else if (filename.endsWith(".JPG")) {
+               filename = imageId + ".JPG";
            }
            File destFile = new File(ItemImageDest, filename);
+           System.out.println(ItemImageDest);
+           System.out.println(filename);
+
            ItemImage itemImage = new ItemImage();
            itemImage.setHttpUrl(ItemImageHttpURL + filename);
            itemImage.setDiskUrl(ItemImageDest + filename);
            itemImage.setImageId(userService.hexString2ByteArray(imageId));
            itemImage.setItemId(itemId);
-        try {
-            destFile.createNewFile();
-            image.transferTo(destFile);
-        } catch (Exception e) {
-            return null;
-        }
+            try {
+                destFile.createNewFile();
+                image.transferTo(destFile);
+            }catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+
+
+
         return itemImage;
     }
     /**
@@ -187,48 +200,54 @@ public class UploadItemServer {
     }
     public void createItem(Request request, UploadReply reply) {
         //TODO: 检查上传的图片是否为NULL
+        try{
+            // Set Up the Item
+            Item item = new Item();
+            item.setDescription(request.getDescription());
+            item.setUsername(request.getUsername());
+            item.setTitle(request.getTitle());
+            item.setPrice(request.getPrice());
 
-        // Set Up the Item
-        Item item = new Item();
-        item.setDescription(request.getDescription());
-        item.setUsername(request.getUsername());
-        item.setTitle(request.getTitle());
-        item.setPrice(request.getPrice());
-        String itemIdInString =  UUID.randomUUID().toString().replace("-","");
-        reply.setItemId(itemIdInString);
-        item.setCategory(request.getCategory());
-        byte[] itemId = userService.hexString2ByteArray(itemIdInString);
-        item.setItemId(itemId);
+            String itemIdInString =  UUID.randomUUID().toString().replace("-","");
+            reply.setItemId(itemIdInString);
+            item.setCategory(request.getCategory());
+            byte[] itemId = userService.hexString2ByteArray(itemIdInString);
+            item.setItemId(itemId);
 
-        ItemImage coverImage = null;
+            ItemImage coverImage = null;
 
-        if (request.getCoverImage() != null) { // When Cover Image is provided
-            coverImage = createItemImage(itemId, request.getCoverImage());
-            reply.setUrlToCover(coverImage.getHttpUrl());
-            item.setCoverImageId(coverImage.getImageId());
-        } else { // When No Cover Image is Provided, use default one
-            reply.setUrlToCover(getDefaultCoverImageURL());
-            item.setCoverImageId(getDefaultCoverImageId());
-        }
-        userService.addItem(item);
-        if (coverImage != null) {
-            itemService.addItemImage(coverImage);
-        }
-        List<MultipartFile> otherImages = request.getOtherImages();
-        if (otherImages != null) {
-            for (int i = 0; i < otherImages.size() ; i++) {
-                 ItemImage otherImage = createItemImage(itemId, otherImages.get(i));
-                 if (otherImage == null) {
-                     reply.setSuccess(false);
-                     return;
-                 }
-                 if (!itemService.addItemImage(otherImage)) {
-                     reply.setSuccess(false);
-                     return;
-                 }
-                 reply.addOtherURL(otherImage.getHttpUrl());
+            if (request.getCoverImage() != null) { // When Cover Image is provided
+                coverImage = createItemImage(itemId, request.getCoverImage());
+                reply.setUrlToCover(coverImage.getHttpUrl());
+                item.setCoverImageId(coverImage.getImageId());
+            } else { // When No Cover Image is Provided, use default one
+                reply.setUrlToCover(getDefaultCoverImageURL());
+                item.setCoverImageId(getDefaultCoverImageId());
             }
+
+            userService.addItem(item);
+            if (coverImage != null) {
+                itemService.addItemImage(coverImage);
+            }
+            List<MultipartFile> otherImages = request.getOtherImages();
+            if (otherImages != null) {
+                for (int i = 0; i < otherImages.size() ; i++) {
+                    ItemImage otherImage = createItemImage(itemId, otherImages.get(i));
+                    if (otherImage == null) {
+                        reply.setSuccess(false);
+                        return;
+                    }
+                    if (!itemService.addItemImage(otherImage)) {
+                        reply.setSuccess(false);
+                        return;
+                    }
+                    reply.addOtherURL(otherImage.getHttpUrl());
+                }
+            }
+        }catch (Exception e) {
+
         }
+
     }
     @CrossOrigin
     @RequestMapping(value = "/uploadItem", method = RequestMethod.POST)

@@ -19,9 +19,8 @@ public class ItemService{
     @Autowired
     @Qualifier("itemDaoImpl")
     private ItemDao itemDao;
-    @Value("${resourceDest.itemImageHttpURL}")
-    public String ItemImageHttpURL;
-    private String defaultCover = ItemImageHttpURL + "NoImage.jpg";
+    @Value("${resourceDest.itemImageHttpURL}NoImage.jpg")
+    public String defaultCover;
 
     public Integer getNumberOfItems(String category) {
         return itemDao.getNumberOfItems(category);

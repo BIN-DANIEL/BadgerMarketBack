@@ -21,9 +21,8 @@ public class FetchItemServer {
     private UserService userService;
     @Autowired
     private AdminService adminService;
-    @Value("${resourceDest.itemImageHttpURL}")
-    public String ItemImageHttpURL;
-    private String defaultCover = ItemImageHttpURL + "NoImage.jpg";
+    @Value("${resourceDest.itemImageHttpURL}NoImage.jpg")
+    public String defaultCover;
     private class ReplyItem {
         private String title; // title of the item
         private String description; // Item's description

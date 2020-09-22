@@ -1,7 +1,7 @@
 ---
 spring:
   profiles:
-    active: dev
+    active: prod
 ---
 server:
   port: 8080
@@ -22,14 +22,14 @@ server:
   port: 8080
 spring:
   datasource:
-    username: ShaoBin
-    password: a88675577
+    username: root
+    password: ShaoBin
     url: jdbc:mysql://localhost:3306/BadgerMarket?serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration
   profiles: prod
 resourceDest:
-  itemImageHttpURL: http://localhost:80/
-  itemImageDiskURL: /Users/shaobindanielhong/MyProject/BadgerMarket/webBackEnd/src/main/resources/static/
+  itemImageHttpURL: http://18.224.6.210:81/
+  itemImageDiskURL: /home/ubuntu/badgermarket/ImgResource/
 ---

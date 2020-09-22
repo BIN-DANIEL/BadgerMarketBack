@@ -7,11 +7,13 @@ import com.BadgerMarket.dao.ItemDao;
 import com.BadgerMarket.dao.UserDao;
 import com.BadgerMarket.entity.Item;
 import com.BadgerMarket.entity.User;
+import com.BadgerMarket.server.FetchItemServer;
 import com.BadgerMarket.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -99,8 +101,9 @@ public class TestService {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    FetchItemServer server;
     @Test
     public void runDataBase() throws Exception{
-
     }
 }

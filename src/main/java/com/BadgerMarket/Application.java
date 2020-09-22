@@ -52,10 +52,10 @@ public class Application implements WebMvcConfigurer{
         ApplicationContext app = SpringApplication.run(Application.class, args);
         /** DataBase Initialization **/
 //        DataBaseDao dataBaseDao = (DataBaseDao) app.getBean("dataBaseDaoImpl");
-////        dataBaseDao.createUserTable();
-////        dataBaseDao.createUserInfoTable();
-////        dataBaseDao.createItemTable();
-////        dataBaseDao.createItemImageTable();
+//        dataBaseDao.createUserTable();
+//        dataBaseDao.createUserInfoTable();
+//        dataBaseDao.createItemTable();
+//        dataBaseDao.createItemImageTable();
         /** Start the Application **/
     }
 }
